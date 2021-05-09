@@ -15,12 +15,10 @@ import validator from "email-validator";
 import cogoToast from "cogo-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import UserTable from "./Table";
 import axios from "axios";
 export default class Form extends Component {
   state = {
     name: "",
-    email: "",
     price: "",
     selectedCategory: null,
     selectedBrand: null,
@@ -29,13 +27,7 @@ export default class Form extends Component {
     techList: [],
     userArray: [],
     categoryOptions: [],
-    brandOptions: [
-      { value: "1", label: "brand 1" },
-      { value: "2", label: "brand 2" },
-      { value: "3", label: "brand 3" },
-      { value: "4", label: "brand 4" },
-      { value: "5", label: "brand 5" },
-    ],
+    brandOptions: [],
     featuresList: [],
     featureValues: [],
     featuresForm: [],
@@ -48,47 +40,6 @@ export default class Form extends Component {
     filterOptions: null,
     filterCategory: null,
     searchSuggestions: [],
-    // { value: "javascript", label: "JavaScript" },
-    // { value: "kotlin", label: "Kotlin" },
-    // { value: "androidStudio", label: "Andoid Studio" },
-    // { value: "python", label: "Python" },
-    // { value: "django", label: "Django" },
-    // ],
-    skillOptions: [
-      {
-        value: "1",
-        label: (
-          <div className="d-flex" style={{ justifyContent: "space-between" }}>
-            <div>
-              <FontAwesomeIcon icon={faStar} />
-            </div>
-          </div>
-        ),
-      },
-      {
-        value: "2",
-        label: (
-          <div className="d-flex" style={{ justifyContent: "space-between" }}>
-            <div>
-              <FontAwesomeIcon icon={faStar} />
-              <FontAwesomeIcon icon={faStar} />
-            </div>
-          </div>
-        ),
-      },
-      {
-        value: "3",
-        label: (
-          <div className="d-flex" style={{ justifyContent: "space-between" }}>
-            <div>
-              <FontAwesomeIcon icon={faStar} />
-              <FontAwesomeIcon icon={faStar} />
-              <FontAwesomeIcon icon={faStar} />
-            </div>
-          </div>
-        ),
-      },
-    ],
   };
   componentDidMount() {
     axios
@@ -388,54 +339,6 @@ export default class Form extends Component {
     }
   };
 
-  handleSkill = (selectedSkill) => {
-    this.setState({ selectedSkill });
-  };
-  handleAdd = () => {
-    var techList = this.state.techList;
-    var selectedTech = this.state.selectedTech;
-    var selectedSkill = this.state.selectedSkill;
-    var i = -1;
-    if (selectedSkill != null && selectedTech != null) {
-      techList.forEach((item, index) => {
-        if (item.tech === selectedTech.label) {
-          i = index;
-          return true;
-        }
-      });
-      if (i == -1) {
-        techList.push({ tech: selectedTech.label, skill: selectedSkill.label });
-      } else {
-        techList[i] = {
-          tech: selectedTech.label,
-          skill: selectedSkill.label,
-        };
-      }
-      // if (!techList.includes({ tech: selectedTech, skill: selectedSkill }))
-      //   techList.push({ tech: selectedTech.label, skill: selectedSkill.label });
-      // else cogoToast.error("already added");
-      this.setState({
-        techList,
-        selectedSkill: null,
-        selectedTech: null,
-      });
-    } else {
-      cogoToast.error("Please add a tecnology with skill level");
-    }
-  };
-
-  removeUser = (i) => {
-    var userArray = this.state.userArray;
-    userArray.splice(i, 1);
-    this.setState({
-      userArray,
-    });
-  };
-  removeTech = (i) => {
-    var techList = this.state.techList;
-    techList.splice(i, 1);
-    this.setState({ techList });
-  };
   render() {
     return (
       <div>
@@ -544,42 +447,7 @@ export default class Form extends Component {
                 </Card>
               </Col>
             </Row>
-            {this.state.techList.length != 0 && (
-              <React.Fragment>
-                <CardHeader
-                  style={{
-                    fontSize: "x-large",
-                  }}
-                  className="mt-3"
-                >
-                  Selected Skills
-                </CardHeader>
 
-                <Row className="my-2 px-4">
-                  {this.state.techList.map((item, index) => (
-                    <Col sm="auto" className="mb-2">
-                      <Button
-                        color="primary"
-                        onClick={() => {
-                          this.removeTech(index);
-                        }}
-                        className="d-flex"
-                        style={{ justifyContent: "space-between" }}
-                      >
-                        <div className="mr-2">{item.tech}</div>
-                        <div>{item.skill}</div>
-                      </Button>
-                    </Col>
-                  ))}
-                </Row>
-                <small
-                  className="px-4"
-                  style={{ fontSize: "small", color: "grey" }}
-                >
-                  * click on the button to unselect the technology
-                </small>
-              </React.Fragment>
-            )}
             <Row
               className="mb-3 mt-5"
               style={{ justifyContent: "space-around" }}
@@ -683,12 +551,6 @@ export default class Form extends Component {
               </Col>
             </Row>
           </Card>
-          {/* {this.state.userArray.length !== 0 && (
-            <UserTable
-              userArray={this.state.userArray}
-              removeUser={this.removeUser}
-            />
-          )} */}
         </Container>
       </div>
     );
